@@ -32,10 +32,10 @@ export default function Login() {
   const hour = date.getHours();
 
   return (
-    <div className="">
+    <div className="h-screen auth-bg-img relative">
       <Header />
-      <div className="h-screen auth-bg-img px-2 p-4">
-        <div className="bg-[#1E1F20] mx-auto rounded-xl w-full py-7">
+      <div className="px-3 p-4">
+        <div className="bg-[#1E1F20] mx-auto rounded-xl w-full py-7 mt-10">
           <div className="flex flex-col items-center justify-center">
             <Image src="https://i.imgur.com/oPkUKVO.png" width={230} height={28} className="w-[280px]" alt="logo" />
             <div className="mt-3">{error && <p className="text-[20px] text-center mx-auto max-w-[200px] rounded-md flex items-center justify-center text-red-600">{error}</p>}</div>

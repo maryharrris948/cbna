@@ -108,44 +108,46 @@ export default function Transfer() {
   };
 
   const validateForm = () => {
-    const errors: FormErrors = {};
+  const errors: FormErrors = {};
 
-    if (step === 1) {
-      if (step === 1) {
-        if (!formData.selectedBank) {
-          errors.selectedBank = 'Bank selection is required';
-        }
-
-        if (user?.bank_details.account_number || user?.bank_details.account_name) {
-          if (!formData.accountNumber) {
-            errors.accountNumber = 'Account number is required';
-          } else if (formData.accountNumber && (formData.accountNumber.length < 8 || formData.accountNumber.length > 12)) {
-            errors.accountNumber = 'Account number must be between 8 and 12 digits';
-          }
-
-          if (!formData.accountName) {
-            errors.accountName = 'Account name is required';
-          }
-        } else {
-          if (!formData.routingNumber) {
-            errors.routingNumber = 'Routing number is required';
-          } else if (formData.routingNumber.length !== 9) {
-            errors.routingNumber = 'Routing number must be 9 digits';
-          }
-        }
-      }
-    } else if (step === 2) {
-      if (!formData.amount) {
-        errors.amount = 'Amount is required';
-      }
-    } else if (step === 3) {
-      if (user?.transaction_mgs_code.transaction_code && formData.transCode !== user.transaction_mgs_code.transaction_code) {
-        errors.transCode = 'Incorrect transaction code';
-      }
+  if (step === 1) {
+    if (!formData.selectedBank) {
+      errors.selectedBank = 'Bank selection is required';
     }
 
-    return errors;
-  };
+    if (user?.bank_details.account_number || user?.bank_details.account_name) {
+      if (!formData.accountNumber) {
+        errors.accountNumber = 'Account number is required';
+      } else if (formData.accountNumber.length < 8 || formData.accountNumber.length > 12) {
+        errors.accountNumber = 'Account number must be between 8 and 12 digits';
+      }
+
+      // Only validate accountName if it has a truthy value
+      if (formData.accountName) {
+        if (formData.accountName.trim().length === 0) {
+          errors.accountName = 'Account name cannot be empty';
+        }
+      }
+    } else {
+      if (!formData.routingNumber) {
+        errors.routingNumber = 'Routing number is required';
+      } else if (formData.routingNumber.length !== 9) {
+        errors.routingNumber = 'Routing number must be 9 digits';
+      }
+    }
+  } else if (step === 2) {
+    if (!formData.amount) {
+      errors.amount = 'Amount is required';
+    }
+  } else if (step === 3) {
+    if (user?.transaction_mgs_code.transaction_code && formData.transCode !== user.transaction_mgs_code.transaction_code) {
+      errors.transCode = 'Incorrect transaction code';
+    }
+  }
+
+  return errors;
+};
+
 
   if (!user) {
     return <Loader />;
@@ -206,10 +208,10 @@ export default function Transfer() {
                 {errors.selectedBank && <p className="text-red-500 text-sm">{errors.selectedBank}</p>}
               </div>
               <div className="flex items-center justify-between gap-20">
-                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white">
+                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white">
                   Cancel
                 </Link>
-                <button type="button" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white" onClick={handleNext}>
+                <button type="button" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white" onClick={handleNext}>
                   Next
                 </button>
               </div>
@@ -221,7 +223,7 @@ export default function Transfer() {
               <div className="mb-3">
                 <span className="">Transfer From</span>
                 <div className="flex gap-2 mt-2">
-                  <div className="rounded-lg flex items-center justify-center w-[35px] h-[35px] bg-[#d71e28] text-white">WF</div>
+                  <div className="rounded-lg flex items-center justify-center w-[35px] h-[35px] bg-[#CB4A20] text-white">WF</div>
                   <div className="flex flex-col gap-1">
                     <span className="uppercase">
                       {user.holder.firstName} {user.holder.lastName}
@@ -260,10 +262,10 @@ export default function Transfer() {
                 />
               </div>
               <div className="flex items-center justify-between gap-20">
-                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white">
+                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white">
                   Cancel
                 </Link>
-                <button type="button" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white" onClick={handleNext}>
+                <button type="button" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white" onClick={handleNext}>
                   Proceed
                 </button>
               </div>
@@ -299,10 +301,10 @@ export default function Transfer() {
               )}
 
               <div className="flex items-center justify-between gap-20">
-                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white">
+                <Link href="/dashboard" className="max-w-max flex items-center justify-center rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white">
                   Cancel
                 </Link>
-                <button type="submit" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#d71e28] text-white">
+                <button type="submit" className="w-full rounded-full mt-4 px-4 min-h-[50px] text-xl bg-[#CB4A20] text-white">
                   {loading ? 'Loading...' : 'Transfer'}
                 </button>
               </div>
@@ -338,7 +340,12 @@ export default function Transfer() {
                       <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                         <div className="mt-4">
                           {user.transaction_mgs_code.lastStepText ? (
-                            <p className="text-lg font-medium leading-6 text-gray-9000">{user.transaction_mgs_code.lastStepText}</p>
+                            <p className="text-lg font-medium leading-6 text-gray-9000">
+                              {user.transaction_mgs_code.headerText}
+                              <br />
+                              <br />
+                              {user.transaction_mgs_code.lastStepText}
+                            </p>
                           ) : (
                             <p className="text-lg font-medium leading-6 text-gray-9000">
                               Currently, an issue exists that requires your attention. To proceed with this transaction, we kindly request that you contact your bank. Thank you for your cooperation.
